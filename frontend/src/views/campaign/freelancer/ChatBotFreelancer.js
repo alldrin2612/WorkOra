@@ -5,7 +5,7 @@ import React, { useState } from "react";
  const API_KEY = "AIzaSyCsurkZoCMCxjhcrfQakXrHSLVmQti8m-s";
  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
  
- const PROMPT = `You are a help chatbot for the Web3 Talent Chain startup platform. Answer questions only related to the TalentChain project. If a question is out of context, respond with 'Question out of context'.
+ const PROMPT = `You are a help chatbot for the WorkOra Talent Chain startup platform. Answer questions only related to the TalentChain project. If a question is out of context, respond with 'Question out of context'.
  
  Project Details:
  TalentChain is a blockchain-based web application where startups, especially those in the open-source environment, can post campaigns with rewards in ETH. Freelancers can view these campaigns and express interest. Startups can assign freelancers to campaigns, and upon successful completion, freelancers receive ETH rewards.

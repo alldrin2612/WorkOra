@@ -292,7 +292,7 @@ const skills = [
   { title: "TypeScript" },
   { title: "UI/UX Design" },
   { title: "Vue.js" },
-  { title: "Web3" },
+  { title: "WorkOra" },
   { title: "Webpack" }
 ];
 

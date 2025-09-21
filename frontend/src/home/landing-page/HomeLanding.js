@@ -51,10 +51,10 @@ export default function Hero() {
                 color: "white",
               }}
             >
-              Web3 Talent Chain revolutionizes hiring through transparent, secure, and decentralized solutions.
+              WorkOra Talent Chain revolutionizes hiring through transparent, secure, and decentralized solutions.
             </Typography>
             <Typography variant="body1" textAlign="center" color="white">
-              By connecting startups with skilled contributors, Web3 Talent Chain fosters collaboration, 
+              By connecting startups with skilled contributors, WorkOra Talent Chain fosters collaboration, 
               incentivizes quality work with cryptocurrency rewards, and drives the growth of blockchain 
               and open-source innovation.
             </Typography>

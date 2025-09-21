@@ -24,7 +24,7 @@ const PopularCard = ({ isLoading }) => {
     const dummyTransactions = [
       {
         id: 1,
-        campaign: { name: 'Web3 Expo' },
+        campaign: { name: 'WorkOra Expo' },
         cost: 0.5,
         transaction_id: 'TX12345',
       },

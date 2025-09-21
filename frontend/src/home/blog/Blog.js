@@ -25,7 +25,7 @@ export default function Blog() {
           <Grid item xs={3}>
           <Card
   image="https://img.freepik.com/free-photo/3d-rendering-blockchain-technology_23-2151480192.jpg?ga=GA1.1.81839668.1714920053&semt=ais_hybrid&w=740"
-  title="Web3 Talent Chain"
+  title="WorkOra Talent Chain"
   date="May 30, 2025"
   description="A decentralized ecosystem empowering open-source contributors and startups through provable reputation."
   buttonText="View Reputation"

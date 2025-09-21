@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { TextField, Button, Container, Typography, Box, Autocomplete } from "@mui/material";
 // import axios from "axios";
 
-const skillsList = ["React", "Node.js", "Blockchain", "Solidity", "Smart Contracts", "Ethereum", "Web3", "UI/UX Design"];
+const skillsList = ["React", "Node.js", "Blockchain", "Solidity", "Smart Contracts", "Ethereum", "WorkOra", "UI/UX Design"];
 
 const CreateCampaign = () => {
   const navigate = useNavigate();
