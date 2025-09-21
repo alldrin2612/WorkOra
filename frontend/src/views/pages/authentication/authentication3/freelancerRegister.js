@@ -116,7 +116,7 @@ const Login = () => {
                   Welcome to,
                 </Typography>
                 <Typography className="font-sty" sx={{ fontSize: "30px" }}>
-                  Talentify
+                  WorkOra
                 </Typography>
               </Box>
               <Box

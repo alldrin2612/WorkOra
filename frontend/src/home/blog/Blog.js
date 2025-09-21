@@ -34,7 +34,6 @@ export default function Blog() {
         </Grid>
       </Box>
       <Section/>
-      <Section/>
     </Box>
   );
 }
