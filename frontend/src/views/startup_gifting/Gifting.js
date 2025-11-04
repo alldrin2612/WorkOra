@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Web3 from 'web3';
 import {
   Box,
   Typography,
@@ -60,38 +59,7 @@ const Gifting = () => {
 
   const handleSendPrize = async (prizeAmount, recipientAddress, campaignId, freelancerId) => {
     try {
-      if (!window.ethereum) {
-        console.error('MetaMask not detected');
-        alert('Please install MetaMask to use this feature.');
-        return;
-      }
-
-      const web3 = new Web3(window.ethereum);
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-      const accounts = await web3.eth.getAccounts();
-      const sender = accounts[0];
-
-      if (!sender) {
-        console.error('No account found');
-        return;
-      }
-
-      const valueInWei = web3.utils.toWei(prizeAmount.toString(), 'ether');
-
-      console.log(`Sending ${valueInWei} wei from ${sender} to ${recipientAddress}`);
-
-      await web3.eth.sendTransaction({
-        from: sender,
-        to: recipientAddress,
-        value: valueInWei,
-        gas: 21000, // typical gas for a normal ETH transfer
-        gasPrice: await web3.eth.getGasPrice() // or set manually if you want
-      });
-      
-      alert(`Successfully sent ${prizeAmount} ETH to the freelancer!`);
-
-      // Call backend route to log reward
+      // Dummy gifting: directly record reward on backend and show confirmation
       const token = localStorage.getItem('authToken');
 
       const res = await fetch('http://localhost:4000/api/startup/rewards', {
@@ -109,19 +77,19 @@ const Gifting = () => {
       const rewardResponse = await res.json();
 
       if (res.ok) {
-        alert('Reward recorded successfully and campaign status updated!');
+        alert('Gift sent');
         // Optionally refresh campaign list
         setCampaigns(prev =>
           prev.map(c => c.id === campaignId ? { ...c, status: 'Reward Sent' } : c)
         );
       } else {
         console.error('Failed to record reward:', rewardResponse);
-        alert('Reward sent but failed to log reward in database.');
+        alert('Failed to record gift. Please try again.');
       }
 
     } catch (err) {
-      console.error('Transaction failed:', err);
-      alert(`Transaction failed: ${err.message || 'Unknown error'}`);
+      console.error('Gift action failed:', err);
+      alert(`Gift failed: ${err.message || 'Unknown error'}`);
     }
   };
 
