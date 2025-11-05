@@ -21,6 +21,7 @@ const Dashboard = () => {
   // const [views, setViews] = useState("");
   const [monthlyAnalytics, setMonthlyAnalytics] = useState([]);
   const [stats, setStats] = useState(null);
+  const [globalOngoing, setGlobalOngoing] = useState(0);
   const [error, setError] = useState('');
 
   console.log(error)
@@ -52,7 +53,23 @@ const Dashboard = () => {
       }
     };
 
+    const fetchGlobalOngoing = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/api/startup/global-ongoing-count', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setGlobalOngoing(data.ongoingCampaignsGlobal || 0);
+        }
+      } catch (e) {
+        console.error('Error fetching global ongoing campaigns:', e);
+      }
+    };
+
     fetchStartupStats();
+    fetchGlobalOngoing();
   }, []);
 
   useEffect(() => {
@@ -186,7 +203,7 @@ const Dashboard = () => {
                   <TotalIncomeDarkCard isLoading={isLoading} assignedCampaignsCount={stats?.assignedCampaigns} />
                   </Grid>
                   <Grid item sm={6} xs={12} md={6} lg={12}>
-                    <TotalIncomeLightCard isLoading={isLoading} ongoingCampaigns={stats?.ongoingCampaigns}/>
+                    <TotalIncomeLightCard isLoading={isLoading} ongoingCampaigns={globalOngoing}/>
                   </Grid>
                 </Grid>
               </Grid>

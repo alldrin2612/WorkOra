@@ -331,7 +331,7 @@ router.post('/freelancer-stats', fetchusers, async (req, res) => {
         const freelancerId = req.user.id;
 
         // Fetch the freelancer by ID and select the required fields
-        const freelancer = await Users.findById(freelancerId).select("rewardsreceived assigned_campaigns");
+        const freelancer = await Users.findById(freelancerId).select("rewardsreceived assigned_campaigns name image");
         if (!freelancer) {
             return res.status(404).send({ error: "Freelancer not found" });
         }
@@ -341,11 +341,20 @@ router.post('/freelancer-stats', fetchusers, async (req, res) => {
         const totalRewards = freelancer.rewardsreceived.reduce((sum, reward) => sum + (reward.prize || 0), 0);
         const assignedCampaignsCount = freelancer.assigned_campaigns.length;
 
+        // Calculate worldwide ranking (same logic as /leaderboard)
+        const freelancers = await Users.find({ role: 'freelancer' }).select('rewardsreceived');
+        const leaderboard = freelancers
+            .map(f => ({ campaignsDone: f.rewardsreceived.length, id: f._id.toString() }))
+            .sort((a, b) => b.campaignsDone - a.campaignsDone);
+        const rankIndex = leaderboard.findIndex(f => f.id === freelancerId.toString());
+        const worldwideRank = rankIndex >= 0 ? rankIndex + 1 : leaderboard.length;
+
         // Send the response
         res.status(200).json({
             completedCampaigns,
             totalRewards,
-            assignedCampaignsCount
+            assignedCampaignsCount,
+            worldwideRank
         });
     } catch (err) {
         console.error('Error in /freelancer-stats:', err);

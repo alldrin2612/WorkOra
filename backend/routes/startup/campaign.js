@@ -549,6 +549,23 @@ router.post('/campaign-stats', fetchusers, async (req, res) => {
     }
 });
 
+// Global ongoing campaigns across all startups (Assigned or Not Assigned)
+router.post('/global-ongoing-count', async (req, res) => {
+    try {
+        const startups = await Users.find({}).select('campaigns');
+        let ongoing = 0;
+        for (const s of startups) {
+            for (const c of s.campaigns) {
+                if (c.status === 'Assigned' || c.status === 'Not Assigned') ongoing += 1;
+            }
+        }
+        return res.status(200).json({ ongoingCampaignsGlobal: ongoing });
+    } catch (error) {
+        console.error('Error in /global-ongoing-count:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 router.post('/view-profile', async (req, res) => {
     try {
         const { freelancerId } = req.body;

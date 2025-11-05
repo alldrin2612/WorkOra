@@ -186,7 +186,7 @@ const Dashboard = () => {
                   <TotalIncomeDarkCard isLoading={isLoading} assignedCampaignsCount={stats?.assignedCampaignsCount} />
                   </Grid>
                   <Grid item sm={6} xs={12} md={6} lg={12}>
-                    <TotalIncomeLightCard isLoading={isLoading} />
+                    <TotalIncomeLightCard isLoading={isLoading} worldwideRank={stats?.worldwideRank} />
                   </Grid>
                 </Grid>
               </Grid>
