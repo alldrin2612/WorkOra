@@ -59,10 +59,6 @@ const Gifting = () => {
 
   const handleSendPrize = async (prizeAmount, recipientAddress, campaignId, freelancerId) => {
     try {
-<<<<<<< HEAD
-=======
-      // Dummy gifting: directly record reward on backend and show confirmation
->>>>>>> e5d37a3b9ad8c027643dd1da88a5c5b3a2485104
       const token = localStorage.getItem('authToken');
       const res = await fetch('http://localhost:4000/api/startup/send-prize', {
         method: 'POST',
@@ -81,31 +77,15 @@ const Gifting = () => {
       const data = await res.json();
 
       if (res.ok) {
-<<<<<<< HEAD
         alert('Prize sent via Ganache and recorded!');
         setCampaigns(prev => prev.map(c => c.id === campaignId ? { ...c, status: 'Reward Sent' } : c));
       } else {
         console.error('Send prize failed:', data);
         alert(data?.message || 'Failed to send prize');
-=======
-        alert('Gift sent');
-        // Optionally refresh campaign list
-        setCampaigns(prev =>
-          prev.map(c => c.id === campaignId ? { ...c, status: 'Reward Sent' } : c)
-        );
-      } else {
-        console.error('Failed to record reward:', rewardResponse);
-        alert('Failed to record gift. Please try again.');
->>>>>>> e5d37a3b9ad8c027643dd1da88a5c5b3a2485104
       }
     } catch (err) {
-<<<<<<< HEAD
       console.error('Send prize error:', err);
       alert(err?.message || 'Unexpected error');
-=======
-      console.error('Gift action failed:', err);
-      alert(`Gift failed: ${err.message || 'Unknown error'}`);
->>>>>>> e5d37a3b9ad8c027643dd1da88a5c5b3a2485104
     }
   };
 
