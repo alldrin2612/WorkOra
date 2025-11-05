@@ -6,6 +6,7 @@ const router = express.Router();
 const multer = require('multer');
 const Users = mongoose.model('Users');
 const cloudinary = require('../../helper/imageUpload')
+const { ethers } = require('ethers')
 
 const storage = multer.diskStorage({});
 
@@ -433,6 +434,82 @@ router.post('/rewards', fetchusers, async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Send prize via Ganache and update rewards + campaign status
+router.post('/send-prize', fetchusers, async (req, res) => {
+    if (!req.user)
+        return res
+            .status(401)
+            .json({ success: false, message: 'unauthorized access!' });
+
+    try {
+        const { recipientAddress, amountEth, freelancerId, campaignId } = req.body;
+
+        if (!recipientAddress || !amountEth || !freelancerId || !campaignId) {
+            return res.status(400).json({ message: 'recipientAddress, amountEth, freelancerId, campaignId are required' });
+        }
+
+        const rpcUrl = process.env.GANACHE_RPC_URL || 'http://127.0.0.1:7545';
+        const privateKey = process.env.GANACHE_PRIVATE_KEY; // funded account from Ganache
+
+        if (!privateKey) {
+            return res.status(500).json({ message: 'GANACHE_PRIVATE_KEY not set in environment' });
+        }
+
+        const provider = new ethers.JsonRpcProvider(rpcUrl);
+        const wallet = new ethers.Wallet(privateKey, provider);
+
+        // Basic address validation
+        if (!ethers.isAddress(recipientAddress)) {
+            return res.status(400).json({ message: 'Invalid recipient address' });
+        }
+
+        const value = ethers.parseEther(String(amountEth));
+
+        const tx = await wallet.sendTransaction({ to: recipientAddress, value });
+        const receipt = await tx.wait();
+
+        // After successful transfer, record reward and update campaign status
+        const user = await Users.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ message: 'Startup not found' });
+        }
+
+        const campaign = user.campaigns.id(campaignId);
+        if (!campaign) {
+            return res.status(404).json({ message: 'Campaign not found' });
+        }
+
+        const freelancer = await Users.findById(freelancerId);
+        if (!freelancer) {
+            return res.status(404).json({ message: 'Freelancer not found' });
+        }
+
+        const formattedDate = new Date().toLocaleDateString('en-GB');
+        const reward = {
+            startupImage: user.image,
+            startupName: user.name,
+            campaignName: campaign.name,
+            prize: campaign.prize,
+            date: formattedDate,
+            status: 'Reward Received'
+        };
+
+        freelancer.rewardsreceived.push(reward);
+        campaign.status = 'Reward Sent';
+
+        await freelancer.save();
+        await user.save();
+
+        return res.status(200).json({
+            message: 'Prize sent via Ganache and recorded successfully',
+            transactionHash: receipt.hash
+        });
+    } catch (error) {
+        console.error('Error in /send-prize:', error);
+        return res.status(500).json({ message: 'Server error', error: error?.message });
     }
 });
 
