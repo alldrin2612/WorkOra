@@ -1,5 +1,5 @@
 {
-  "name": "talentchain",
+  "name": "WorkOra",
   "version": "1.0.0",
   "description": "Decentralized blockchain powered freelancing platform",
   "main": "server.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ShaneCoelho/TalentChain_Backend.git"
+    "url": "git+https://github.com/alldrin2612/WorkOra"
   },
   "author": "Alldrin Tuscano",
   "license": "ISC",
